@@ -11,38 +11,71 @@
     font-family: "Consolas", "Courier New", monospace;
     padding: 20px;
     font-size: 18px;
+    overflow: hidden;
   }
+
+  /* タイピング風 */
   .line {
     opacity: 0;
-    animation: show 0.3s forwards;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #0f0;
+    animation: typing 0.25s steps(20, end) forwards, blink 0.8s step-end infinite;
   }
-  @keyframes show {
-    to { opacity: 1; }
+
+  @keyframes typing {
+    from { width: 0; opacity: 1; }
+    to { width: 100%; opacity: 1; }
+  }
+
+  @keyframes blink {
+    50% { border-color: transparent; }
+  }
+
+  /* ノイズ背景 */
+  .noise {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGD4DwABBAEAffNkWQAAAABJRU5ErkJggg==");
+    opacity: 0.08;
+    animation: noiseMove 0.2s infinite;
+  }
+
+  @keyframes noiseMove {
+    0% { transform: translate(0,0); }
+    50% { transform: translate(-10px,10px); }
+    100% { transform: translate(0,0); }
   }
 </style>
 </head>
 <body>
 
+<div class="noise"></div>
 <div id="log"></div>
 
 <script>
 const messages = [
   ">> 確認中...",
-  ">> 確認完了",
-  ">> 接続終了"
+  ">> 確認完了しました",
+  ">> 接続を終了します"
 ];
 
 let index = 0;
 
 function addLine() {
   if (index >= messages.length) return;
+
   const log = document.getElementById("log");
   const line = document.createElement("div");
   line.className = "line";
-  line.style.animationDelay = (index * 0.6) + "s"; // 0.6秒間隔 → 約2秒で完了
+  line.style.animationDelay = (index * 0.5) + "s"; // 0.6秒間隔 → 約2秒で完了
   line.textContent = messages[index];
+
   log.appendChild(line);
   index++;
+
   setTimeout(addLine, 600);
 }
 
