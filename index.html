@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading...</title>
+
+<style>
+body {
+  margin: 0;
+  background: #000;
+  color: #00ff9c;
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 400px;
+}
+
+.line {
+  opacity: 0;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="line" id="l1">接続確認中...</div>
+  <div class="line" id="l2">チェックしています...</div>
+  <div class="line" id="l3">完了<span class="blink">_</span></div>
+</div>
+
+<script>
+const lines = ["l1","l2","l3","l4"];
+
+lines.forEach((id, i) => {
+  setTimeout(() => {
+    document.getElementById(id).style.opacity = 1;
+  }, i * 1000);
+});
+</script>
+
+</body>
+</html>
