@@ -10,11 +10,11 @@
     color: #0f0;
     font-family: "Consolas", "Courier New", monospace;
     padding: 20px;
-    font-size: 16px;
+    font-size: 18px;
   }
   .line {
     opacity: 0;
-    animation: show 0.4s forwards;
+    animation: show 0.3s forwards;
   }
   @keyframes show {
     to { opacity: 1; }
@@ -27,8 +27,7 @@
 
 <script>
 const messages = [
-  ">> 接続確認中...",
-  ">> 認証トークン検証中...",
+  ">> 確認中...",
   ">> 確認完了",
   ">> 接続終了"
 ];
@@ -40,7 +39,7 @@ function addLine() {
   const log = document.getElementById("log");
   const line = document.createElement("div");
   line.className = "line";
-  line.style.animationDelay = (index * 0.6) + "s";
+  line.style.animationDelay = (index * 0.6) + "s"; // 0.6秒間隔 → 約2秒で完了
   line.textContent = messages[index];
   log.appendChild(line);
   index++;
