@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loading...</title>
+<title>Connecting...</title>
 
 <style>
 body {
@@ -18,16 +18,21 @@ body {
 
 .container {
   width: 90%;
-  max-width: 400px;
+  max-width: 420px;
 }
 
 .line {
   opacity: 0;
-  margin: 10px 0;
-  font-size: 16px;
+  margin: 6px 0;
+  font-size: 15px;
 }
 
-.blink {
+.dim {
+  color: #008f66;
+  font-size: 13px;
+}
+
+.cursor {
   animation: blink 1s infinite;
 }
 
@@ -39,20 +44,38 @@ body {
 
 <body>
 
-<div class="container">
-  <div class="line" id="l1">接続確認中...</div>
-  <div class="line" id="l2">チェックしています...</div>
-  <div class="line" id="l3">完了<span class="blink">_</span></div>
+<div class="container" id="box">
+  <div class="line" id="l1">[ system ] initializing...</div>
+  <div class="line" id="l2">[ network ] 接続確認中...</div>
+  <div class="line" id="l4">[ result ] 完了<span class="cursor">_</span></div>
+
+  <div class="line dim" id="l6">redirecting to resource...</div>
+  <div class="line dim" id="l7">https://example.com/session</div>
 </div>
 
 <script>
-const lines = ["l1","l2","l3","l4"];
+const lines = ["l1","l2","l3","l4","l5","l6","l7"];
 
+// 順番に表示
 lines.forEach((id, i) => {
   setTimeout(() => {
     document.getElementById(id).style.opacity = 1;
-  }, i * 1000);
+  }, i * 900);
 });
+
+// 最後に全部消してセッション終了表示
+setTimeout(() => {
+  const box = document.getElementById("box");
+  box.innerHTML = 
+    <div style="
+      text-align:center;
+      font-size:16px;
+      color:#00ff9c;
+    ">
+      session closed
+    </div>
+  ;
+}, 7500);
 </script>
 
 </body>
