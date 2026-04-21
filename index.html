@@ -1,82 +1,212 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Connecting...</title>
+  <meta charset="UTF-8">
+  <title>確認中...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-<style>
-body {
-  margin: 0;
-  background: #000;
-  color: #00ff9c;
-  font-family: monospace;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
+    body {
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #111827;
+    }
 
-.container {
-  width: 90%;
-  max-width: 420px;
-}
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+      padding: 24px 28px;
+      width: 360px;
+      max-width: 90vw;
+    }
 
-.line {
-  opacity: 0;
-  margin: 6px 0;
-  font-size: 15px;
-}
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
 
-.dim {
-  color: #008f66;
-  font-size: 13px;
-}
+    .status-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      flex-shrink: 0;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
 
-.cursor {
-  animation: blink 1s infinite;
-}
+    .status-icon.loading {
+      border: 2px solid #bfdbfe;
+      background: #eff6ff;
+    }
 
-@keyframes blink {
-  50% { opacity: 0; }
-}
-</style>
+    .status-icon.done {
+      border: 2px solid #bbf7d0;
+      background: #ecfdf3;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 2px solid #60a5fa;
+      border-top-color: transparent;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .checkmark {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #22c55e;
+      position: relative;
+    }
+
+    .checkmark::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 9px;
+      height: 5px;
+      border-left: 2px solid #f9fafb;
+      border-bottom: 2px solid #f9fafb;
+      transform: rotate(-45deg);
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 2px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .progress {
+      margin-top: 16px;
+      margin-bottom: 8px;
+      height: 6px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #3b82f6, #22c55e);
+      border-radius: 999px;
+      transition: width 0.2s ease-out;
+    }
+
+    .detail {
+      font-size: 12px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin-top: 4px;
+    }
+
+    .meta {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #9ca3af;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.35s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
-
 <body>
-
-<div class="container" id="box">
-  <div class="line" id="l1">[ system ] initializing...</div>
-  <div class="line" id="l2">[ network ] 接続確認中...</div>
-  <div class="line" id="l4">[ result ] 完了<span class="cursor">_</span></div>
-
-  <div class="line dim" id="l6">redirecting to resource...</div>
-  <div class="line dim" id="l7">https://example.com/session</div>
-</div>
-
-<script>
-const lines = ["l1","l2","l3","l4","l5","l6","l7"];
-
-// 順番に表示
-lines.forEach((id, i) => {
-  setTimeout(() => {
-    document.getElementById(id).style.opacity = 1;
-  }, i * 900);
-});
-
-// 最後に全部消してセッション終了表示
-setTimeout(() => {
-  const box = document.getElementById("box");
-  box.innerHTML = 
-    <div style="
-      text-align:center;
-      font-size:16px;
-      color:#00ff9c;
-    ">
-      session closed
+  <div class="card">
+    <div class="header">
+      <div id="statusIcon" class="status-icon loading">
+        <div id="iconInner" class="spinner"></div>
+      </div>
+      <div>
+        <div id="title" class="title">確認中...</div>
+        <div id="subtitle" class="subtitle">お待ちください。</div>
+      </div>
     </div>
-  ;
-}, 7500);
-</script>
 
+    <div class="progress">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+
+  <script>
+    // 疑似的な進捗と完了演出
+    const progressBar = document.getElementById("progressBar");
+    const title = document.getElementById("title");
+    const subtitle = document.getElementById("subtitle");
+    const detail = document.getElementById("detail");
+    const metaLeft = document.getElementById("metaLeft");
+    const statusIcon = document.getElementById("statusIcon");
+    const iconInner = document.getElementById("iconInner");
+
+    let progress = 0;
+    const timer = setInterval(() => {
+      // 進み方を少しランダムにしてリアル感を出す
+      const step = Math.random() * 18 + 5; // 5〜23%
+      progress = Math.min(progress + step, 100);
+      progressBar.style.width = progress + "%";
+
+      if (progress >= 100) {
+        clearInterval(timer);
+        setTimeout(showDone, 400); // 少し間を置いて完了表示
+      }
+    }, 600);
+
+    function showDone() {
+      // アイコン切り替え
+      statusIcon.classList.remove("loading");
+      statusIcon.classList.add("done");
+      iconInner.remove();
+      const check = document.createElement("div");
+      check.className = "checkmark fade-in";
+      statusIcon.appendChild(check);
+
+      // テキスト更新
+      title.textContent = "確認完了";
+      metaLeft.textContent = "ステータス: 確認完了";
+      document.title = "確認完了";
+    }
+  </script>
 </body>
 </html>
