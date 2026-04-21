@@ -14,22 +14,18 @@
     overflow: hidden;
   }
 
-  /* タイピング風 */
+  /* タイピング風（カーソルなし） */
   .line {
     opacity: 0;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 2px solid #0f0;
-    animation: typing 0.25s steps(20, end) forwards, blink 0.8s step-end infinite;
+    animation: typing 0.25s steps(20, end) forwards;
+    border-right: none; /* ← カーソルを完全に消す */
   }
 
   @keyframes typing {
     from { width: 0; opacity: 1; }
     to { width: 100%; opacity: 1; }
-  }
-
-  @keyframes blink {
-    50% { border-color: transparent; }
   }
 
   /* ノイズ背景 */
@@ -58,8 +54,8 @@
 <script>
 const messages = [
   ">> 確認中...",
-  ">> 確認完了しました",
-  ">> 接続を終了します"
+  ">> 碁認完了",
+  ">> 接続終了"
 ];
 
 let index = 0;
@@ -70,7 +66,7 @@ function addLine() {
   const log = document.getElementById("log");
   const line = document.createElement("div");
   line.className = "line";
-  line.style.animationDelay = (index * 0.5) + "s"; // 0.6秒間隔 → 約2秒で完了
+  line.style.animationDelay = (index * 0.6) + "s"; // 0.6秒間隔 → 約2秒で完了
   line.textContent = messages[index];
 
   log.appendChild(line);
